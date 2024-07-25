@@ -1,4 +1,6 @@
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,7 +13,7 @@ public class MyFrame extends JFrame {
 
 
         JPanel panel = new JPanel();
-        panel.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 15));
+        panel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
 
         JButton bubbleSortButton = new JButton("Bubble sort");
         JButton quickSortButton = new JButton("Quick sort");
@@ -35,11 +37,27 @@ public class MyFrame extends JFrame {
             }
         });
 
+        JSlider slider = new JSlider();
+        JTextField sliderValue = new JTextField("" + slider.getValue());
+        sliderValue.setEditable(false);
+
+        slider.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                sliderValue.setText("" + ((JSlider)e.getSource()).getValue());
+            }
+        });
+
         panel.add(bubbleSortButton);
         panel.add(quickSortButton);
         panel.add(shuffleButton);
+        panel.add(slider);
+        panel.add(sliderValue);
 
-        add(panel, BorderLayout.NORTH);
+        SortingVisualisation sortingVisualisation = new SortingVisualisation(slider.getValue());
+
+        add(panel, BorderLayout.SOUTH);
+        add(sortingVisualisation, BorderLayout.CENTER);
 
         setVisible(true);
     }
