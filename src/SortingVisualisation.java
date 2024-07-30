@@ -4,28 +4,48 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class SortingVisualisation extends JPanel {
-    private int[] array;
+    private int[] table;
     public SortingVisualisation(int size){
-
+        createTable(size);
     }
-    private void draw(Graphics g, int size){
-        Graphics2D g2D = (Graphics2D) g;
-        array = new int[size];
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        drawTable(g);
+    }
+    public void createTable(int size){
+        table = new int[size];
         Random random = new Random();
-        for(int i = 0; i < array.length; i++){
-            array[i] = random.nextInt(100) + 1;
+        for(int i = 0; i < table.length; i++){
+            table[i] = random.nextInt(100) + 1;
         }
-        repaint();
-        int barWidth = getWidth() / array.length;
-        int maxValue = Arrays.stream(array).max().orElse(0);
+    }
+    private void drawTable(Graphics g) {
+        Graphics2D g2D = (Graphics2D) g;
 
-        for (int i = 0; i < array.length; i++) {
-            int barHeight = (int) ((double) array[i] / maxValue * getHeight());
-            int x = i * barWidth;
+        if (table.length == 0) {
+            return;
+        }
+
+        int space = 2;
+        int barWidth = (getWidth() - (space * (table.length - 1))) / table.length;
+        int maxValue = Arrays.stream(table).max().orElse(0);
+
+        for (int i = 0; i < table.length; i++) {
+            int barHeight = getHeight() * table[i] / maxValue;
+            int x = i * (barWidth + space);
             int y = getHeight() - barHeight;
 
-            g2D.setColor(Color.CYAN);
+            Color color = colorForValue(table[i], maxValue, i, table.length);
+            g2D.setColor(color);
             g2D.fillRect(x, y, barWidth, barHeight);
         }
+    }
+    private Color colorForValue(int value, int maxValue, int index, int totalBars) {
+        float ratio = (float) value / maxValue;
+        float baseHue = ratio * 0.4f;
+        float hueVariation = (float) index / totalBars * 0.1f;
+        float hue = (baseHue + hueVariation) % 1.0f;
+        return Color.getHSBColor(hue, 0.7f, 0.9f);
     }
 }
