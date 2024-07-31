@@ -19,6 +19,7 @@ public class SortingVisualisation extends JPanel {
         for(int i = 0; i < table.length; i++){
             table[i] = random.nextInt(100) + 1;
         }
+        repaint();
     }
     private void drawTable(Graphics g) {
         Graphics2D g2D = (Graphics2D) g;
@@ -47,5 +48,31 @@ public class SortingVisualisation extends JPanel {
         float hueVariation = (float) index / totalBars * 0.1f;
         float hue = (baseHue + hueVariation) % 1.0f;
         return Color.getHSBColor(hue, 0.7f, 0.9f);
+    }
+    public void bubbleSort() {
+        int n = table.length;
+        boolean swapped;
+
+        for (int i = 0; i < n - 1; i++) {
+            swapped = false;
+
+            for (int j = 0; j < n - 1 - i; j++) {
+                if (table[j] > table[j + 1]) {
+
+                    int temp = table[j];
+                    table[j] = table[j + 1];
+                    table[j + 1] = temp;
+                    swapped = true;
+                    try{
+                        Thread.sleep(2);
+                    }catch(InterruptedException e){
+                        e.printStackTrace();
+                    }
+                }
+                repaint();
+            }
+            if (!swapped) break;
+        }
+        repaint();
     }
 }
