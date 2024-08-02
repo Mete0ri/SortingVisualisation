@@ -5,6 +5,7 @@ import java.util.Random;
 
 public class SortingVisualisation extends JPanel {
     private int[] table;
+    boolean isSorting = false;
     public SortingVisualisation(int size){
         createTable(size);
     }
@@ -14,12 +15,14 @@ public class SortingVisualisation extends JPanel {
         drawTable(g);
     }
     public void createTable(int size){
-        table = new int[size];
-        Random random = new Random();
-        for(int i = 0; i < table.length; i++){
-            table[i] = random.nextInt(100) + 1;
+        if(isSorting == false) {
+            table = new int[size];
+            Random random = new Random();
+            for (int i = 0; i < table.length; i++) {
+                table[i] = random.nextInt(100) + 1;
+            }
+            repaint();
         }
-        repaint();
     }
     private void drawTable(Graphics g) {
         Graphics2D g2D = (Graphics2D) g;
@@ -50,29 +53,52 @@ public class SortingVisualisation extends JPanel {
         return Color.getHSBColor(hue, 0.7f, 0.9f);
     }
     public void bubbleSort() {
-        int n = table.length;
-        boolean swapped;
+        new Thread(() -> {
+            int n = table.length;
+            int temp;
 
-        for (int i = 0; i < n - 1; i++) {
-            swapped = false;
+            if (isSorting == false) {
+                isSorting = true;
+                for (int i = 0; i < n - 1; i++) {
+                    for (int j = 0; j < n - 1; j++) {
 
-            for (int j = 0; j < n - 1 - i; j++) {
-                if (table[j] > table[j + 1]) {
+                        if (table[j] > table[j + 1]) {
+                            temp = table[j];
+                            table[j] = table[j + 1];
+                            table[j + 1] = temp;
 
-                    int temp = table[j];
-                    table[j] = table[j + 1];
-                    table[j + 1] = temp;
-                    swapped = true;
-                    try{
-                        Thread.sleep(2);
-                    }catch(InterruptedException e){
-                        e.printStackTrace();
+                            try {
+                                Thread.sleep(10);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        repaint();
                     }
                 }
-                repaint();
+                isSorting = false;
             }
-            if (!swapped) break;
-        }
-        repaint();
+        }).start();
+    }
+    public void insertionSort(){
+        new Thread(() -> {
+            int n = table.length;
+            int j;
+            int temp;
+            if(isSorting == false){
+                isSorting = true;
+                for(int i = 0; i < n - 1; i++){
+                    j = i;
+                    while(j > 0 || table[j - 1] > table[j]){
+                        temp = table[j];
+                        table[j] = table[j - 1];
+                        j = j - 1;
+                    }
+                    repaint();
+                }
+                isSorting = false;
+            }
+        }).start();
     }
 }
+
