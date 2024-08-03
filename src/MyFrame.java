@@ -16,7 +16,9 @@ public class MyFrame extends JFrame{
         panel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
 
         JButton bubbleSortButton = new JButton("Bubble sort");
-        JButton quickSortButton = new JButton("Quick sort");
+        JButton insertionSortButton = new JButton("Insertion sort");
+        JButton selectionSortButton = new JButton("Selection sort");
+        JButton mergeSortButton = new JButton("Merge sort");
         JButton shuffleButton = new JButton("Shuffle");
 
         JSlider slider = new JSlider();
@@ -31,7 +33,9 @@ public class MyFrame extends JFrame{
         });
 
         panel.add(bubbleSortButton);
-        panel.add(quickSortButton);
+        panel.add(insertionSortButton);
+        panel.add(selectionSortButton);
+        panel.add(mergeSortButton);
         panel.add(shuffleButton);
         panel.add(slider);
         panel.add(sliderValue);
@@ -44,10 +48,22 @@ public class MyFrame extends JFrame{
                 sortingVisualisation.bubbleSort();
             }
         });
-        quickSortButton.addActionListener(new ActionListener() {
+        insertionSortButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                sortingVisualisation.insertionSort();
+            }
+        });
+        selectionSortButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                sortingVisualisation.selectionSort();
+            }
+        });
+        mergeSortButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                sortingVisualisation.mergSort();
             }
         });
         shuffleButton.addActionListener(new ActionListener() {
