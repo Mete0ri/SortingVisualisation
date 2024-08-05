@@ -52,7 +52,7 @@ public class SortingVisualisation extends JPanel {
         float hue = (baseHue + hueVariation) % 1.0f;
         return Color.getHSBColor(hue, 0.7f, 0.9f);
     }
-    public void bubbleSort() {
+    public void bubbleSort(int delay) {
         new Thread(() -> {
             int n = table.length;
             int temp;
@@ -68,7 +68,7 @@ public class SortingVisualisation extends JPanel {
                             table[j + 1] = temp;
 
                             try {
-                                Thread.sleep(3);
+                                Thread.sleep(delay);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
@@ -80,7 +80,7 @@ public class SortingVisualisation extends JPanel {
             }
         }).start();
     }
-    public void insertionSort(){
+    public void insertionSort(int delay){
         new Thread(() -> {
             int n = table.length;
             int j;
@@ -95,7 +95,7 @@ public class SortingVisualisation extends JPanel {
                         table[j - 1] = temp;
                         j = j - 1;
                         try{
-                            Thread.sleep(3);
+                            Thread.sleep(delay);
                         }catch (InterruptedException e){
                             e.printStackTrace();
                         }
@@ -106,7 +106,7 @@ public class SortingVisualisation extends JPanel {
             }
         }).start();
     }
-    public void selectionSort(){
+    public void selectionSort(int delay){
         new Thread(() -> {
             int n = table.length;
             int min;
@@ -127,7 +127,7 @@ public class SortingVisualisation extends JPanel {
                     }
                     repaint();
                     try{
-                        Thread.sleep(100);
+                        Thread.sleep(delay);
                     }catch (InterruptedException e){
                         e.printStackTrace();
                     }
@@ -136,28 +136,28 @@ public class SortingVisualisation extends JPanel {
             }
         }).start();
     }
-    public void mergSort(){
+    public void mergSort(int delay){
         new Thread(() -> {
 
             if(!isSorting){
                 isSorting = true;
 
-                mergSortHelper(0, table.length - 1);
+                mergSortHelper(0, table.length - 1, delay);
 
                 isSorting = false;
             }
         }).start();
     }
-    private void mergSortHelper(int left, int right) {
+    private void mergSortHelper(int left, int right, int delay) {
         int mid;
         if (left < right) {
             mid = (left + right) / 2;
-            mergSortHelper(left, mid);
-            mergSortHelper(mid + 1, right);
+            mergSortHelper(left, mid, delay);
+            mergSortHelper(mid + 1, right, delay);
             merg(left, mid, right);
             repaint();
             try{
-                Thread.sleep(100);
+                Thread.sleep(delay);
             }catch (InterruptedException e){
                 e.printStackTrace();
             }

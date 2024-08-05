@@ -21,55 +21,78 @@ public class MyFrame extends JFrame{
         JButton mergeSortButton = new JButton("Merge sort");
         JButton shuffleButton = new JButton("Shuffle");
 
-        JSlider slider = new JSlider();
-        JTextField sliderValue = new JTextField("" + slider.getValue());
-        sliderValue.setEditable(false);
+        JSlider tableSize = new JSlider();
+        JTextField tableSizeValue = new JTextField("" + tableSize.getValue());
+        tableSizeValue.setEditable(false);
 
-        slider.addChangeListener(new ChangeListener() {
+        JLabel tableSizeName = new JLabel("Size:");
+        tableSize.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                sliderValue.setText("" + ((JSlider)e.getSource()).getValue());
+                tableSizeValue.setText("" + ((JSlider)e.getSource()).getValue());
             }
         });
 
+        JSlider delay = new JSlider();
+        JTextField delayValue = new JTextField("" + delay.getValue());
+        delayValue.setEditable(false);
+
+        JLabel delayName = new JLabel("Delay:");
+
+        delay.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                delayValue.setText("" + ((JSlider)e.getSource()).getValue());
+            }
+        });
+
+        panel.add(delayName);
+        panel.add(delay);
+        panel.add(delayValue);
         panel.add(bubbleSortButton);
         panel.add(insertionSortButton);
         panel.add(selectionSortButton);
         panel.add(mergeSortButton);
         panel.add(shuffleButton);
-        panel.add(slider);
-        panel.add(sliderValue);
+        panel.add(tableSizeName);
+        panel.add(tableSize);
+        panel.add(tableSizeValue);
 
-        SortingVisualisation sortingVisualisation = new SortingVisualisation(slider.getValue());
+
+        SortingVisualisation sortingVisualisation = new SortingVisualisation(tableSize.getValue());
 
         bubbleSortButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
-                sortingVisualisation.bubbleSort();
+                long startTime = System.currentTimeMillis();
+                sortingVisualisation.bubbleSort(delay.getValue());
+                long endTime = System.currentTimeMillis();
+                long time = endTime - startTime;
+                System.out.println(time);
             }
         });
         insertionSortButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                sortingVisualisation.insertionSort();
+                sortingVisualisation.insertionSort(delay.getValue());
             }
         });
         selectionSortButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                sortingVisualisation.selectionSort();
+                sortingVisualisation.selectionSort(delay.getValue());
             }
         });
         mergeSortButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                sortingVisualisation.mergSort();
+                sortingVisualisation.mergSort(delay.getValue());
             }
         });
         shuffleButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                sortingVisualisation.createTable(slider.getValue());
+                sortingVisualisation.createTable(tableSize.getValue());
             }
         });
 
