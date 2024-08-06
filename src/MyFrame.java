@@ -11,9 +11,8 @@ public class MyFrame extends JFrame{
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
 
-
         JPanel panel = new JPanel();
-        panel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        panel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 5));
 
         JButton bubbleSortButton = new JButton("Bubble sort");
         JButton insertionSortButton = new JButton("Insertion sort");
@@ -58,17 +57,14 @@ public class MyFrame extends JFrame{
         panel.add(tableSize);
         panel.add(tableSizeValue);
 
-
-        SortingVisualisation sortingVisualisation = new SortingVisualisation(tableSize.getValue());
+        JLabel timeLabel = new JLabel("Sorting time: ");
+        SortingVisualisation sortingVisualisation = new SortingVisualisation(tableSize.getValue(), timeLabel);
+        panel.add(timeLabel);
 
         bubbleSortButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
-                long startTime = System.currentTimeMillis();
                 sortingVisualisation.bubbleSort(delay.getValue());
-                long endTime = System.currentTimeMillis();
-                long time = endTime - startTime;
-                System.out.println(time);
             }
         });
         insertionSortButton.addActionListener(new ActionListener() {
@@ -87,6 +83,7 @@ public class MyFrame extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 sortingVisualisation.mergSort(delay.getValue());
+
             }
         });
         shuffleButton.addActionListener(new ActionListener() {

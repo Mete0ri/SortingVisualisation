@@ -6,7 +6,9 @@ import java.util.Random;
 public class SortingVisualisation extends JPanel {
     private int[] table;
     boolean isSorting = false;
-    public SortingVisualisation(int size){
+    private JLabel timeLabel;
+    public SortingVisualisation(int size, JLabel timeLabel){
+        this.timeLabel = timeLabel;
         createTable(size);
     }
     @Override
@@ -15,7 +17,7 @@ public class SortingVisualisation extends JPanel {
         drawTable(g);
     }
     public void createTable(int size){
-        if(isSorting == false) {
+        if(!isSorting) {
             table = new int[size];
             Random random = new Random();
             for (int i = 0; i < table.length; i++) {
@@ -54,6 +56,7 @@ public class SortingVisualisation extends JPanel {
     }
     public void bubbleSort(int delay) {
         new Thread(() -> {
+            long startTime = System.currentTimeMillis();
             int n = table.length;
             int temp;
 
@@ -76,38 +79,46 @@ public class SortingVisualisation extends JPanel {
                         repaint();
                     }
                 }
+                long endTime = System.currentTimeMillis();
+                long time = endTime - startTime;
+                timeLabel.setText("Sorting time: " + time + " ms");
                 isSorting = false;
             }
         }).start();
     }
     public void insertionSort(int delay){
         new Thread(() -> {
+            long startTime = System.currentTimeMillis();
             int n = table.length;
             int j;
             int temp;
-            if(!isSorting){
+            if (!isSorting) {
                 isSorting = true;
-                for(int i = 1; i < n; i++){
+                for (int i = 1; i < n; i++) {
                     j = i;
-                    while(j > 0 && table[j - 1] > table[j]){
+                    while (j > 0 && table[j - 1] > table[j]) {
                         temp = table[j];
                         table[j] = table[j - 1];
                         table[j - 1] = temp;
                         j = j - 1;
-                        try{
+                        try {
                             Thread.sleep(delay);
-                        }catch (InterruptedException e){
+                        } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
                     }
                     repaint();
                 }
+                long endTime = System.currentTimeMillis();
+                long time = endTime - startTime;
+                timeLabel.setText("Sorting time: " + time + " ms");
                 isSorting = false;
             }
         }).start();
     }
     public void selectionSort(int delay){
         new Thread(() -> {
+            long startTime = System.currentTimeMillis();
             int n = table.length;
             int min;
             int temp;
@@ -132,18 +143,24 @@ public class SortingVisualisation extends JPanel {
                         e.printStackTrace();
                     }
                 }
+                long endTime = System.currentTimeMillis();
+                long time = endTime - startTime;
+                timeLabel.setText("Sorting time: " + time + " ms");
                 isSorting = false;
             }
         }).start();
     }
     public void mergSort(int delay){
         new Thread(() -> {
-
+            long startTime = System.currentTimeMillis();
             if(!isSorting){
                 isSorting = true;
 
                 mergSortHelper(0, table.length - 1, delay);
 
+                long endTime = System.currentTimeMillis();
+                long time = endTime - startTime;
+                timeLabel.setText("Sorting time: " + time + " ms");
                 isSorting = false;
             }
         }).start();
